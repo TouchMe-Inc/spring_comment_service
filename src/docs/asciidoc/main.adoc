@@ -1,0 +1,198 @@
+= Docs
+TouchMe
+:source-highlighter: highlight.js
+:sourcedir: ../../../build/generated-snippets
+:sectlinks:
+:icons: font
+:toclevels: 4
+:doctype: book
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+[[resources-news]]
+== REST News Service
+
+[[resources-news-get]]
+=== Get news
+
+A `GET` request is used to access the news read.
+
+==== Request structure
+
+include::{sourcedir}/news/getById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/news/getById/response-body.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/news/getById/curl-request.adoc[]
+
+[[resources-news-post]]
+=== Create news
+
+A `POST` request is used to access the news create.
+
+==== Request structure
+
+include::{sourcedir}/news/create/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/news/create/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/news/create/curl-request.adoc[]
+
+[[resources-news-delete]]
+=== Delete news
+
+A `DELETE` request is used to access the news delete.
+
+==== Request structure
+
+include::{sourcedir}/news/deleteById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/news/deleteById/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/news/deleteById/curl-request.adoc[]
+
+[[resources-crud-put]]
+=== Update news
+
+A `PUT` request is used to access the news update.
+
+==== Request structure
+
+include::{sourcedir}/news/updateById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/news/updateById/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/news/updateById/curl-request.adoc[]
+
+[[resources-comment]]
+== REST Comment Service
+
+[[resources-comment-get]]
+=== Get comment
+
+A `GET` request is used to access the comment read.
+
+==== Request structure
+
+include::{sourcedir}/comment/getById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/comment/getById/response-body.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/comment/getById/curl-request.adoc[]
+
+[[resources-comment-post]]
+=== Create comment
+
+A `POST` request is used to access the comment create.
+
+==== Request structure
+
+include::{sourcedir}/comment/create/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/comment/create/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/comment/create/curl-request.adoc[]
+
+[[resources-comment-delete]]
+=== Delete comment
+
+A `DELETE` request is used to access the comment delete.
+
+==== Request structure
+
+include::{sourcedir}/comment/deleteById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/comment/deleteById/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/comment/deleteById/curl-request.adoc[]
+
+[[resources-comment-put]]
+=== Update comment
+
+A `PUT` request is used to access the comment update.
+
+==== Request structure
+
+include::{sourcedir}/comment/updateById/http-request.adoc[]
+
+==== Example response
+
+include::{sourcedir}/comment/updateById/http-response.adoc[]
+
+==== CURL request
+
+include::{sourcedir}/comment/updateById/curl-request.adoc[]

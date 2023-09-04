@@ -1,0 +1,247 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_comment_data
+      author: TouchMe
+      changes:
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Sed viverra tellus in hac habitasse platea"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  type: bigint
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Risus in hendrerit gravida rutrum quisque"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et netus. Sit amet aliquam id diam"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Quisque id diam vel quam elementum"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Ut sem viverra aliquet eget sit amet"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Eu mi bibendum neque egestas congue"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Lacinia at quis risus sed vulputate odio ut"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Commodo ullamcorper a lacus vestibulum sed arcu non"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Proin libero nunc consequat interdum"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Vivamus arcu felis bibendum ut tristique et."
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  type: bigint
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Pellentesque habitant morbi tristique senectus et netus et malesuada"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Vestibulum lorem sed risus ultricies tristique nulla aliquet"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Morbi blandit cursus risus at ultrices mi tempus"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Aliquet nec ullamcorper sit amet risus"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Pellentesque massa placerat duis ultricies lacus sed"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Egestas sed sed risus pretium quam vulputate dignissim"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Nullam ac tortor vitae purus faucibus ornare"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Quisque id diam vel quam elementum pulvinar etiam non quam"
+        - insert:
+            tableName: comments
+            columns:
+              - column:
+                  name: news_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: "User_A"
+              - column:
+                  name: text
+                  value: "Risus sed vulputate odio ut enim"
