@@ -1,16 +1,18 @@
 package by.touchme.commentservice.handler;
 
 import by.touchme.commentservice.exception.CommentNotFoundException;
-import by.touchme.commentservice.record.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
@@ -22,47 +24,32 @@ import java.util.Map;
  */
 @RestControllerAdvice
 public class ErrorHandler {
-    private static final Logger logger = LoggerFactory.getLogger(ErrorHandler.class);
 
     /**
      * The method expects a NotFound error and generates a response for the request.
      *
-     * @param e NewsNotFoundException or CommentNotFoundException
+     * @param ex NewsNotFoundException or CommentNotFoundException
      * @return Object with error message
      */
     @ExceptionHandler(CommentNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage notFoundException(Exception e, WebRequest request) {
-        return new ErrorMessage(new Date(), e.getMessage(), request.getDescription(false));
+    public ResponseEntity<Object> notFoundException(Exception ex, WebRequest request) {
+        return prepareErrorMessage(ex, request, HttpStatus.NOT_FOUND);
     }
 
     /**
-     * The method expects a MethodArgumentNotValidException error and generates a response for the request.
-     *
-     * @param e MethodArgumentNotValidException
-     * @return Object with error message
+     * Any unhandled exceptions.
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage argumentNotValidException(MethodArgumentNotValidException e, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-
-        e.getBindingResult().getAllErrors().forEach((error) ->{
-
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
-
-        return new ErrorMessage(new Date(), errors.toString(), request.getDescription(false));
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
+        System.out.println(ex.getClass());
+        return prepareErrorMessage(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({Exception.class})
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorMessage anyException(Exception e, WebRequest request) {
-        logger.error("Unexpected error", e);
-        return new ErrorMessage(new Date(), e.getMessage(), request.getDescription(false));
+    private ResponseEntity<Object> prepareErrorMessage(Exception ex, WebRequest request, HttpStatus status) {
+        String requestUri = ((ServletWebRequest) request).getRequest().getRequestURI();
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), requestUri);
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), status);
     }
 }
