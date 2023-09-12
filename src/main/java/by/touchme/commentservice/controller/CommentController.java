@@ -35,7 +35,6 @@ public class CommentController {
         return new ResponseEntity<>(commentService.getPage(pageable), HttpStatus.OK);
     }
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
     @PostMapping
     public ResponseEntity<CommentDto> create(@Valid @RequestBody CommentDto comment) {
