@@ -21,6 +21,13 @@ public class SearchCommentController {
 
     private final CommentService commentService;
 
+    /**
+     * Endpoint for retrieving comments using a paginated search expression.
+     *
+     * @param searchDto Search criteria
+     * @param pageable Pagination options
+     * @return PageDto with CommentDto
+     */
     @GetMapping("/search")
     public ResponseEntity<PageDto<CommentDto>> getPage(@Valid @RequestBody SearchDto searchDto, Pageable pageable) {
         return new ResponseEntity<>(commentService.getPageByCriteria(searchDto, pageable), HttpStatus.OK);

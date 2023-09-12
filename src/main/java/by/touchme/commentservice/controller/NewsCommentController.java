@@ -19,6 +19,13 @@ public class NewsCommentController {
 
     private final CommentService commentService;
 
+    /**
+     * Endpoint for receiving paginated news comments.
+     *
+     * @param newsId News Identifier
+     * @param pageable Pagination options
+     * @return PageDto with CommentDto
+     */
     @GetMapping("/{id}/comment")
     public ResponseEntity<PageDto<CommentDto>> getPage(
             @PathVariable(name = "id") Long newsId, Pageable pageable) {

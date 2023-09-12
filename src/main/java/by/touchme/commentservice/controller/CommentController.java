@@ -33,16 +33,35 @@ public class CommentController {
     private final CommentService commentService;
     private final PermissionService permissionService;
 
+    /**
+     * Endpoint for retrieving a comment by its Identifier.
+     *
+     * @return CommentDto
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CommentDto> getById(@PathVariable(name = "id") Long id) {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint for receiving paginated comments.
+     *
+     * @param pageable Pagination options
+     * @return PageDto with CommentDto
+     */
     @GetMapping
     public ResponseEntity<PageDto<CommentDto>> getPage(Pageable pageable) {
         return new ResponseEntity<>(commentService.getPage(pageable), HttpStatus.OK);
     }
 
+    /**
+     * Endpoint for creating a comment.
+     * Requires authorization with user or admin role.
+     * After creation, the user has the right to delete and edit the created entry.
+     *
+     * @param comment CommentDto without id
+     * @return CommentDto
+     */
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
     @PostMapping
     public ResponseEntity<CommentDto> create(@Valid @RequestBody CommentDto comment) {
@@ -56,6 +75,13 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
+    /**
+     * Endpoint for update a comment by its Identifier.
+     * Requires administrator role or write permission.
+     *
+     * @param comment CommentDto without id
+     * @return CommentDto
+     */
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasPermission(#id, 'by.touchme.commentservice.dto.CommentDto', 'WRITE')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<CommentDto> updateById(
@@ -63,6 +89,10 @@ public class CommentController {
         return new ResponseEntity<>(commentService.updateById(id, comment), HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Endpoint for delete a comment by its Identifier.
+     * Requires administrator role or delete permission.
+     */
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasPermission(#id, 'by.touchme.commentservice.dto.CommentDto', 'DELETE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteById(@PathVariable(name = "id") Long id) {
