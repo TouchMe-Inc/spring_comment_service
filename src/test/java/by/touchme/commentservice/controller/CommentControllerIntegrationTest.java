@@ -103,7 +103,7 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.create with incorrect NewsDto")
+    @DisplayName("Integration test for CommentController.create with incorrect CommentDto")
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
     void createWithIncorrectDto() throws Exception {
@@ -140,7 +140,7 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.updateById with incorrect NewsDto")
+    @DisplayName("Integration test for CommentController.updateById with incorrect CommentDto")
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
     void updateByIdWithIncorrectDto() throws Exception {
