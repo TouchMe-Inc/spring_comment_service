@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -27,6 +28,17 @@ public class ErrorHandler {
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<Object> notFoundException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Validation via @Valid annotation failed.
+     *
+     * @param ex MethodArgumentNotValidException
+     * @return Object with error message
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleNotValidException(Exception ex, WebRequest request) {
+        return prepareErrorMessage(ex, request, HttpStatus.BAD_REQUEST);
     }
 
     /**
