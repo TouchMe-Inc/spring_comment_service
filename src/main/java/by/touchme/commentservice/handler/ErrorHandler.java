@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -23,21 +21,42 @@ public class ErrorHandler {
     /**
      * The method expects a NotFound error and generates a response for the request.
      *
-     * @param ex NewsNotFoundException or CommentNotFoundException
+     * @param ex CommentNotFoundException
      * @return Object with error message
      */
     @ExceptionHandler(CommentNotFoundException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> notFoundException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {AccessDeniedException.class, ExpiredJwtException.class})
+    /**
+     * Unauthorized access.
+     *
+     * @param ex AccessDeniedException
+     * @return Object with error message
+     */
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenyException(Exception ex, WebRequest request) {
+        return prepareErrorMessage(ex, request, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Expired Jwt token.
+     *
+     * @param ex ExpiredJwtException
+     * @return Object with error message
+     */
+    @ExceptionHandler(value = ExpiredJwtException.class)
     public ResponseEntity<Object> handleExpiredJwtException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.FORBIDDEN);
     }
 
+    /**
+     * Malformed Jwt token.
+     *
+     * @param ex MalformedJwtException
+     * @return Object with error message
+     */
     @ExceptionHandler(value = {MalformedJwtException.class})
     public ResponseEntity<Object> handleMalformedJwtException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.BAD_REQUEST);
@@ -45,6 +64,9 @@ public class ErrorHandler {
 
     /**
      * Any unhandled exceptions.
+     *
+     * @param ex Exception
+     * @return Object with error message
      */
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
