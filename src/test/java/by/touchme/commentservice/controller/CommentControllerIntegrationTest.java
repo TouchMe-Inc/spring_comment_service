@@ -69,9 +69,9 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.getById with NotFound")
+    @DisplayName("Integration test for CommentController.getById with non existent id")
     @Test
-    void getByIdNotFound() throws Exception {
+    void getByIdWithNonExistentId() throws Exception {
         mockMvc
                 .perform(
                         get(URL + "/{id}", NOT_FOUND_ID)
@@ -103,6 +103,23 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
+    @DisplayName("Integration test for CommentController.create with incorrect NewsDto")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @Test
+    void createWithIncorrectDto() throws Exception {
+        CommentDto createComment = new CommentDto();
+
+        mockMvc.perform(
+                        post(URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(createComment))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document(DOC_IDENTIFIER));
+    }
+
     @DisplayName("Integration test for CommentController.updateById")
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
@@ -123,10 +140,27 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.updateById with NotFound")
+    @DisplayName("Integration test for CommentController.updateById with incorrect NewsDto")
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    void updateByIdNotFound() throws Exception {
+    void updateByIdWithIncorrectDto() throws Exception {
+        CommentDto updateComment = new CommentDto();
+
+        mockMvc.perform(
+                        put(URL + "/{id}", CORRECT_ID)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updateComment))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document(DOC_IDENTIFIER));
+    }
+
+    @DisplayName("Integration test for CommentController.updateById with non existent id")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @Test
+    void updateByIdWithNonExistentId() throws Exception {
         CommentDto updateComment = new CommentDto();
         updateComment.setNewsId(1L);
         updateComment.setUsername("John Doe");
@@ -158,10 +192,10 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.deleteById with NotFound")
+    @DisplayName("Integration test for CommentController.deleteById with non existent id")
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    void deleteByIdNotFound() throws Exception {
+    void deleteByIdWithNonExistentId() throws Exception {
         mockMvc
                 .perform(
                         delete(URL + "/{id}", NOT_FOUND_ID)
