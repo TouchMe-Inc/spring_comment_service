@@ -12,32 +12,32 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 public class LFUCacheTest {
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache getCacheName")
     @Test
-    public void getCacheName() {
+    void getCacheName() {
         Cache cache = new LFUCache("test", 3);
         Assertions.assertEquals("test", cache.getName());
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache getNonExistingCache")
     @Test
-    public void getNonExistingCache() {
+    void getNonExistingCache() {
         Cache cache = new LFUCache("test", 3);
         Assertions.assertNull(cache.get("1"));
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache getExistingCache")
     @Test
-    public void getExistingCache() {
+    void getExistingCache() {
         Cache cache = new LFUCache("test", 3);
         cache.put("key", "value");
 
         assertEqualsValueWrapper(cache.get("key"), "value");
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache updateCacheValue")
     @Test
-    public void updateCacheValue() {
+    void updateCacheValue() {
         Cache cache = new LFUCache("test", 3);
         cache.put("key", "value");
 
@@ -51,9 +51,9 @@ public class LFUCacheTest {
         assertEqualsValueWrapper(cache.get("key"), "newValue");
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache deleteNonRivalCache")
     @Test
-    public void deleteNonRivalCache() {
+    void deleteNonRivalCache() {
         Cache cache = new LFUCache("test", 3);
         cache.put("key1", "value1");
         cache.put("key2", "value2");
@@ -79,9 +79,9 @@ public class LFUCacheTest {
         Assertions.assertNull(cache.get("key2"));
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache deleteCacheByKey")
     @Test
-    public void deleteCacheByKey() {
+    void deleteCacheByKey() {
         Cache cache = new LFUCache("test", 3);
         cache.put("key", "value");
 
@@ -95,9 +95,9 @@ public class LFUCacheTest {
         Assertions.assertNull(cache.get("key"));
     }
 
-    @DisplayName("JUnit test for LFUCache")
+    @DisplayName("JUnit test for LFUCache deleteAllCache")
     @Test
-    public void deleteAllCache() {
+    void deleteAllCache() {
         Cache cache = new LFUCache("test", 3);
         cache.put("key1", "value1");
         cache.put("key2", "value2");

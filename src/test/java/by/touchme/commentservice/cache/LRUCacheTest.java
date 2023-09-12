@@ -12,32 +12,32 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 public class LRUCacheTest {
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache getCacheName")
     @Test
-    public void getCacheName() {
+    void getCacheName() {
         Cache cache = new LFUCache("test", 3);
         Assertions.assertEquals("test", cache.getName());
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache getNonExistingCache")
     @Test
-    public void getNonExistingCache() {
+    void getNonExistingCache() {
         Cache cache = new LRUCache("test", 3);
         Assertions.assertNull(cache.get("1"));
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache getExistingCache")
     @Test
-    public void getExistingCache() {
+    void getExistingCache() {
         Cache cache = new LRUCache("test", 3);
         cache.put("key", "value");
 
         assertEqualsValueWrapper(cache.get("key"), "value");
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache updateCacheValue")
     @Test
-    public void updateCacheValue() {
+    void updateCacheValue() {
         Cache cache = new LRUCache("test", 3);
         cache.put("key", "value");
 
@@ -51,9 +51,9 @@ public class LRUCacheTest {
         assertEqualsValueWrapper(cache.get("key"), "newValue");
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache deleteNonRivalCache")
     @Test
-    public void deleteNonRivalCache() {
+    void deleteNonRivalCache() {
         Cache cache = new LRUCache("test", 3);
         cache.put("key1", "value1");
         cache.put("key2", "value2");
@@ -79,9 +79,9 @@ public class LRUCacheTest {
         Assertions.assertNull(cache.get("key3"));
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache deleteCacheByKey")
     @Test
-    public void deleteCacheByKey() {
+    void deleteCacheByKey() {
         Cache cache = new LRUCache("test", 3);
         cache.put("key", "value");
 
@@ -95,9 +95,9 @@ public class LRUCacheTest {
         Assertions.assertNull(cache.get("key"));
     }
 
-    @DisplayName("JUnit test for LRUCache")
+    @DisplayName("JUnit test for LRUCache deleteAllCache")
     @Test
-    public void deleteAllCache() {
+    void deleteAllCache() {
         Cache cache = new LRUCache("test", 3);
         cache.put("key1", "value1");
         cache.put("key2", "value2");
