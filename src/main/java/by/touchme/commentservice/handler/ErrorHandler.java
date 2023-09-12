@@ -48,7 +48,6 @@ public class ErrorHandler {
      */
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
-        System.out.println(ex.getClass());
         return prepareErrorMessage(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
