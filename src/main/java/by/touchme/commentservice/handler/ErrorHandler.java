@@ -1,23 +1,18 @@
 package by.touchme.commentservice.handler;
 
 import by.touchme.commentservice.exception.CommentNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Controller that catches all thrown exceptions.
@@ -36,6 +31,16 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> notFoundException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class, ExpiredJwtException.class})
+    public ResponseEntity<Object> handleExpiredJwtException(Exception ex, WebRequest request) {
+        return prepareErrorMessage(ex, request, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {MalformedJwtException.class})
+    public ResponseEntity<Object> handleMalformedJwtException(Exception ex, WebRequest request) {
+        return prepareErrorMessage(ex, request, HttpStatus.BAD_REQUEST);
     }
 
     /**

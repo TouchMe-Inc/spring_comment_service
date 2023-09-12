@@ -1,13 +1,16 @@
 package by.touchme.commentservice.controller;
 
 import by.touchme.commentservice.dto.CommentDto;
+import by.touchme.commentservice.service.PermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,21 +26,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CommentControllerIntegrationTest {
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
-    private final String URL = "/v1/comment";
-    private final String DOC_IDENTIFIER = "comment/{methodName}";
+    final String URL = "/v1/comment";
+    final String DOC_IDENTIFIER = "comment/{methodName}";
 
-    private final Long NOT_FOUND_ID = 99999L;
-    private final Long CORRECT_ID = 1L;
-    private final Long DELETE_ID = 2L;
+    final Long NOT_FOUND_ID = 99999L;
+    final Long CORRECT_ID = 1L;
+    final Long DELETE_ID = 2L;
+
+    @MockBean
+    PermissionService permissionService;
 
     @DisplayName("Integration test for CommentController.getPage")
     @Test
-    public void getPage() throws Exception {
+    void getPage() throws Exception {
         mockMvc.perform(
                         get(URL)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +57,7 @@ public class CommentControllerIntegrationTest {
 
     @DisplayName("Integration test for CommentController.getById")
     @Test
-    public void getById() throws Exception {
+    void getById() throws Exception {
         mockMvc
                 .perform(
                         get(URL + "/{id}", CORRECT_ID)
@@ -63,9 +69,9 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.getById")
+    @DisplayName("Integration test for CommentController.getById with NotFound")
     @Test
-    public void getByIdNotFound() throws Exception {
+    void getByIdNotFound() throws Exception {
         mockMvc
                 .perform(
                         get(URL + "/{id}", NOT_FOUND_ID)
@@ -78,8 +84,9 @@ public class CommentControllerIntegrationTest {
     }
 
     @DisplayName("Integration test for CommentController.create")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         CommentDto createComment = new CommentDto();
         createComment.setNewsId(1L);
         createComment.setUsername("John Doe");
@@ -97,8 +104,9 @@ public class CommentControllerIntegrationTest {
     }
 
     @DisplayName("Integration test for CommentController.updateById")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    public void updateById() throws Exception {
+    void updateById() throws Exception {
         CommentDto updateComment = new CommentDto();
         updateComment.setNewsId(1L);
         updateComment.setUsername("John Doe");
@@ -115,9 +123,10 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.updateById")
+    @DisplayName("Integration test for CommentController.updateById with NotFound")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    public void updateByIdNotFound() throws Exception {
+    void updateByIdNotFound() throws Exception {
         CommentDto updateComment = new CommentDto();
         updateComment.setNewsId(1L);
         updateComment.setUsername("John Doe");
@@ -135,8 +144,9 @@ public class CommentControllerIntegrationTest {
     }
 
     @DisplayName("Integration test for CommentController.deleteById")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    public void deleteById() throws Exception {
+    void deleteById() throws Exception {
         mockMvc
                 .perform(
                         delete(URL + "/{id}", DELETE_ID)
@@ -148,9 +158,10 @@ public class CommentControllerIntegrationTest {
                 .andDo(document(DOC_IDENTIFIER));
     }
 
-    @DisplayName("Integration test for CommentController.deleteById")
+    @DisplayName("Integration test for CommentController.deleteById with NotFound")
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     @Test
-    public void deleteByIdNotFound() throws Exception {
+    void deleteByIdNotFound() throws Exception {
         mockMvc
                 .perform(
                         delete(URL + "/{id}", NOT_FOUND_ID)

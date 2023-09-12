@@ -12,6 +12,9 @@ import by.touchme.commentservice.service.CommentService;
 import by.touchme.commentservice.specification.CommentSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
+    @Cacheable(cacheNames = "comments", key = "#id")
     @Override
     public CommentDto getById(Long id) {
         log.info("Get comment with id = {}", id);
@@ -73,6 +77,7 @@ public class CommentServiceImpl implements CommentService {
         return new PageDto<>(page.map(commentMapper::modelToDto));
     }
 
+    @CachePut(cacheNames = "comments", key = "#result.id")
     @Override
     public CommentDto create(CommentDto comment) {
         log.info("Create comment ({})", comment);
@@ -83,6 +88,7 @@ public class CommentServiceImpl implements CommentService {
         );
     }
 
+    @CachePut(cacheNames = "comments", key = "#id")
     @Override
     public CommentDto updateById(Long id, CommentDto comment) {
         if (!commentRepository.existsById(id)) {
@@ -99,6 +105,7 @@ public class CommentServiceImpl implements CommentService {
         );
     }
 
+    @CacheEvict(cacheNames = "comments", key = "#id")
     @Override
     public void deleteById(Long id) {
         if (!commentRepository.existsById(id)) {

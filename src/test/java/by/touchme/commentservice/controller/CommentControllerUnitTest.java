@@ -1,14 +1,18 @@
 package by.touchme.commentservice.controller;
 
 import by.touchme.commentservice.dto.CommentDto;
+import by.touchme.commentservice.filter.JwtFilter;
 import by.touchme.commentservice.service.CommentService;
+import by.touchme.commentservice.service.PermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,21 +25,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles(profiles = "test")
+@AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(CommentController.class)
 public class CommentControllerUnitTest {
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockBean
-    private CommentService commentService;
+    CommentService commentService;
+
+    @MockBean
+    JwtFilter jwtFilter;
+
+    @MockBean
+    PermissionService permissionService;
 
     @DisplayName("JUnit test for CommentController.getPage")
     @Test
-    public void getPage() throws Exception {
+    void getPage() throws Exception {
         mockMvc.perform(
                         get("/v1/comment")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +58,7 @@ public class CommentControllerUnitTest {
 
     @DisplayName("JUnit test for CommentController.getById")
     @Test
-    public void getById() throws Exception {
+    void getById() throws Exception {
         this.mockMvc
                 .perform(
                         get("/v1/comment/{id}", 1L)
@@ -59,8 +70,9 @@ public class CommentControllerUnitTest {
     }
 
     @DisplayName("JUnit test for CommentController.create")
+    @WithMockUser
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         CommentDto createComment = new CommentDto();
         createComment.setNewsId(1L);
         createComment.setUsername("John Doe");
@@ -85,8 +97,9 @@ public class CommentControllerUnitTest {
     }
 
     @DisplayName("JUnit test for CommentController.updateById")
+    @WithMockUser
     @Test
-    public void updateById() throws Exception {
+    void updateById() throws Exception {
         CommentDto updateComment = new CommentDto();
         updateComment.setNewsId(1L);
         updateComment.setUsername("John Doe");
@@ -111,8 +124,9 @@ public class CommentControllerUnitTest {
     }
 
     @DisplayName("JUnit test for CommentController.deleteById")
+    @WithMockUser
     @Test
-    public void deleteById() throws Exception {
+    void deleteById() throws Exception {
         this.mockMvc
                 .perform(
                         delete("/v1/comment/{id}", 1L)

@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @RequiredArgsConstructor
-public class CommentDto {
+public class CommentDto implements AclEntity {
 
     private Long id;
 

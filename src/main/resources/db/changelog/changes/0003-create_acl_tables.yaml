@@ -1,0 +1,178 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_acl_tables
+      author: TouchMe
+      changes:
+        - createTable:
+            tableName: acl_sid
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  startWith: 100
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk-acl_sid-id
+                    nullable: false
+              - column:
+                  name: principal
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sid
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+        - addUniqueConstraint:
+            tableName: acl_sid
+            columnNames: sid,principal
+            constraintName: unique_uk_1
+        - createTable:
+            tableName: acl_class
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  startWith: 100
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk-acl_class-id
+                    nullable: false
+              - column:
+                  name: class
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: acl_class
+            columnNames: class
+            constraintName: unique_uk_2
+        - createTable:
+            tableName: acl_object_identity
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  startWith: 100
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk-acl_object_identity-id
+                    nullable: false
+              - column:
+                  name: object_id_class
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: object_id_identity
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_object
+                  type: bigint
+              - column:
+                  name: owner_sid
+                  type: bigint
+              - column:
+                  name: entries_inheriting
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: acl_object_identity
+            columnNames: object_id_class,object_id_identity
+            constraintName: unique_uk_3
+        - addForeignKeyConstraint:
+            baseTableName: acl_object_identity
+            baseColumnNames: parent_object
+            constraintName: foreign_fk_1
+            referencedTableName: acl_object_identity
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: acl_object_identity
+            baseColumnNames: object_id_class
+            constraintName: foreign_fk_2
+            referencedTableName: acl_class
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: acl_object_identity
+            baseColumnNames: owner_sid
+            constraintName: foreign_fk_3
+            referencedTableName: acl_sid
+            referencedColumnNames: id
+        - createTable:
+            tableName: acl_entry
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  startWith: 100
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk-acl_enry-id
+                    nullable: false
+              - column:
+                  name: acl_object_identity
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ace_order
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sid
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mask
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: granting
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: audit_success
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: audit_failure
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: acl_entry
+            constraintName: unique_uk_4
+            columnNames: acl_object_identity,ace_order
+        - addForeignKeyConstraint:
+            baseTableName: acl_entry
+            baseColumnNames: acl_object_identity
+            constraintName: foreign_fk_4
+            referencedTableName: acl_object_identity
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: acl_entry
+            baseColumnNames: sid
+            constraintName: foreign_fk_5
+            referencedTableName: acl_sid
+            referencedColumnNames: id
