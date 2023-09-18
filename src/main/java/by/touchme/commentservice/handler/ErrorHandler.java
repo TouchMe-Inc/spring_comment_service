@@ -6,6 +6,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,12 +32,12 @@ public class ErrorHandler {
     }
 
     /**
-     * Validation via @Valid annotation failed.
+     * Validation via @Valid annotation failed or Empty required body.
      *
-     * @param ex MethodArgumentNotValidException
+     * @param ex MethodArgumentNotValidException or HttpMessageNotReadableException
      * @return Object with error message
      */
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<Object> handleNotValidException(Exception ex, WebRequest request) {
         return prepareErrorMessage(ex, request, HttpStatus.BAD_REQUEST);
     }
