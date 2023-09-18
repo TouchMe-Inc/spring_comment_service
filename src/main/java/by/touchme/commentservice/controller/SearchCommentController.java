@@ -29,7 +29,7 @@ public class SearchCommentController {
      * @return PageDto with CommentDto
      */
     @GetMapping("/search")
-    public ResponseEntity<PageDto<CommentDto>> getPage(@Valid @RequestBody SearchDto searchDto, Pageable pageable) {
+    public ResponseEntity<PageDto<CommentDto>> search(@Valid @RequestBody SearchDto searchDto, Pageable pageable) {
         return new ResponseEntity<>(commentService.getPageByCriteria(searchDto, pageable), HttpStatus.OK);
     }
 }
