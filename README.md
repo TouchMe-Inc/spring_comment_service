@@ -1,47 +1,10 @@
 ﻿# About spring_comment_service
 This repository contains the comments microservice.
 
-## Search [NEW!]
-`GET /api/v1/comment/search`
 
-Request Body:
-```json
-{
-  "criteriaList": [
-    {
-      "key": "text",
-      "operation": "CONTAINS",
-      "value": "Sed"
-    },
-    {
-      "key": "text",
-      "operation": "CONTAINS",
-      "value": "Commodo"
-    }
-  ]
-}
-```
-
-Response Body:
-```json
-{
-  "content": [
-    {
-      "id": 9,
-      "newsId": 1,
-      "username": "User_A",
-      "text": "Commodo ullamcorper a lacus vestibulum sed arcu non",
-      "time": "2023-09-04T07:02:01.172+00:00"
-    }
-  ],
-  "metadata": {
-    "number": 0,
-    "size": 20,
-    "totalElements": 1,
-    "totalPages": 1
-  }
-}
-```
+## Run the application
+To run the application, run the following command in a terminal window directory:
+`./gradlew bootRun`
 
 ## Cache
 There are three types of caching implemented in the service:
@@ -49,21 +12,21 @@ There are three types of caching implemented in the service:
 - lru
 - redis
 
-Configuration example for lru cache:
+### Configuration example for lru cache:
 ```yaml
 cache:
   type: lru
   capacity: 10
 ```
 
-Configuration example for lfu cache:
+### Configuration example for lfu cache:
 ```yaml
 cache:
   type: lfu
   capacity: 10
 ```
 
-Configuration example for redis cache:
+### Configuration example for redis cache:
 ```yaml
 cache:
   type: redis
